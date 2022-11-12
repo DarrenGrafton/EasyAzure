@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Views\AppService\Index.cshtml" />
     <None Include="Views\Compute\IaaS.cshtml" />
   </ItemGroup>
 
