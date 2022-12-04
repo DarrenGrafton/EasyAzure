@@ -10,7 +10,7 @@
 #I put my $subscriptionid in a git ignored txt file to avoid putting it in a public repo.  Replace the following line with $subscriptionid = '<yoursubscriptionID>'
 $subscriptionid = Get-Content -Path '../subscription-id.txt' | Out-String
 
-Connect-AzAccount
+#Connect-AzAccount
 Set-AzContext $subscriptionid
 
 
