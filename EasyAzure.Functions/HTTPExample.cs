@@ -16,9 +16,9 @@ namespace EasyAzure.Functions
     //• Implement function triggers by using data operations, timers, and webhooks
     //• Implement Azure Durable Functions
 
-    public static class Function1
+    public static class HTTPExample
     {
-        [FunctionName("Function1")]
+        [FunctionName("HTTPExample")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
