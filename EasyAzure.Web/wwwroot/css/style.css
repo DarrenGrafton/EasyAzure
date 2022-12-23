@@ -94,7 +94,7 @@ header nav a + a {
 main {
     /* top padding header height + whatever visual padding we want */
     padding: calc(1.5rem + var(--headerHeight)) var(--containerPadding);
-    min-height: 600px;
+    min-height: calc(100vh - var(--headerHeight));
 }
 
 

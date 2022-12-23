@@ -1,12 +1,12 @@
 ﻿//https://learn.microsoft.com/en-us/azure/azure-functions/functions-create-first-function-bicep?tabs=CLI
 
-@description('Location for all resources.')
 param location string = resourceGroup().location
+param appName string = 'easyazure'
+param appServicePlanName string = toLower('plan-easyazure-${uniqueString(resourceGroup().id)}')
 
 
-var functionAppName = 'fn-easyazure-${uniqueString(resourceGroup().id)}'
-var hostingPlanName = 'plan-easyazfuncs-${uniqueString(resourceGroup().id)}'
-var applicationInsightsName = 'appi-easyazfuncs-${uniqueString(resourceGroup().id)}'
+var functionAppName = 'fn-${appName}-${uniqueString(resourceGroup().id)}'
+var applicationInsightsName = 'appi-${appName}funcs-${uniqueString(resourceGroup().id)}'
 var runtime = 'dotnet'
 var storageAccountType = 'Standard_LRS'
 
@@ -22,8 +22,12 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   kind: 'Storage'
 }
 
-resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
-  name: hostingPlanName
+resource existingHostingPlan 'Microsoft.Web/serverfarms@2021-03-01' existing =  {
+  name: appServicePlanName
+}
+
+resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = if (existingHostingPlan.id == null) {
+  name: appServicePlanName
   location: location
   sku: {
     name: 'Y1'
@@ -40,7 +44,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
     type: 'SystemAssigned'
   }
   properties: {
-    serverFarmId: hostingPlan.id
+    serverFarmId: (existingHostingPlan.id==null ? existingHostingPlan.id : hostingPlan.id)
     siteConfig: {
       appSettings: [
         {
